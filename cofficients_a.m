@@ -3,7 +3,8 @@ function [ A ] = cofficients_a(M, sam_R, sam_P, mic_r, mic_p, f)
     sam_x = sam_R .* cos(sam_P);
     sam_y = sam_R .* sin(sam_P);
 
-    sp = zeros(2*M+1);
+    sp = zeros(1, 2*M+1);
+    %size(sp)
     for n = 1:2*M
         sp(n) = soundfield(f, sam_R(n), sam_P(n));
     end
@@ -26,6 +27,7 @@ function [ A ] = cofficients_a(M, sam_R, sam_P, mic_r, mic_p, f)
         for j = 1:2*M+1
             J(n,j) = besselj(n-M-1, k*r_x(j)) * exp(1i*(n-M-1)*r_p(j));
         end
-    end    
+    end
+
     A = sp/J;
 end

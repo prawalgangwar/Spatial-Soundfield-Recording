@@ -1,9 +1,14 @@
-function [ T ] = transform_a(m, n, q, r_q, phi_q, k)
-    %B = ones(2*n+1, 1);             %temp. resort
+function [ T ] = transform_a(m, q, r_q, phi_q, f, R_o)
+    k = 2*pi*f/340;
+    n = round(k * exp(1) * R_o /2);
     T = zeros(2*m*q+q, 2*n+1);
-    for i = -m:m
-        for j = n:-n
-           T(i+m+1, j-n+1) = besselj(i+j, k*r_q(i+m+1))*exp(-1i*(i+j)*phi_q(i+m+1));
+    for q = 1:q
+        for i = -m:m
+            for j = n:-n
+               temp = besselj(i+j, k*r_q(q))*exp(-1i*(i+j)*phi_q(q));
+               print temp
+               T((2*m+1)*(q-1)+(m+1+i), j-n+1) = temp;
+            end
         end
     end
 end
