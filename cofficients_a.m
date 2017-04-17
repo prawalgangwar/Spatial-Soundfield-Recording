@@ -1,28 +1,31 @@
-function [ A ] = cofficients_a(N, sam_R, sam_P, mic_r, mic_p)
+function [ A ] = cofficients_a(M, sam_R, sam_P, mic_r, mic_p, f)
+
     sam_x = sam_R .* cos(sam_P);
     sam_y = sam_R .* sin(sam_P);
-    
-    sp = zeros(N);
-    for n = 1:N
+
+    sp = zeros(2*M+1);
+    for n = 1:2*M
         sp(n) = soundfield(f, sam_R(n), sam_P(n));
     end
+    
+    k = 2*pi*f/340;
     
     mic_x = mic_r * cos(mic_p);
     mic_y = mic_r * sin(mic_p);
     
-    %Matrix Rotation and Translation
-    [rt_x, rt_y] = rotate_translate(sam_x, sam_y, mic_x, mic_y);
+    %Matrix Translation
+    rt_x =  sam_x - mic_x;
+    rt_y =  sam_y - mic_y; 
     
-    r_x = sqrt(rt_x * rt_x + rt_y * rt_y);
-    r_p = atan(rt_y/rt_x);
+    r_x = sqrt(rt_x .* rt_x + rt_y .* rt_y);
+    r_p = atan(rt_y./rt_x);
 
-    J = zeros(N,N);
+    J = zeros(2*M+1,2*M+1);
     
-    for n = 1:N
-        for j = 1:N
-            J(n,j) = besselj(n, k*r_x) * exp(1i*n*r_p);
+    for n = 1:2*M+1
+        for j = 1:2*M+1
+            J(n,j) = besselj(n-M-1, k*r_x(j)) * exp(1i*(n-M-1)*r_p(j));
         end
-    end
-    
-    A = S * inv(J);
+    end    
+    A = sp/J;
 end
