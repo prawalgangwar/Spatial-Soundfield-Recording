@@ -1,9 +1,9 @@
 clear all
 
 Q = 10;
-M = 1;
+M = 3;
 R_o = 4;
-f = 140;
+f = 340;
 phi_q = 0:Q-1;
 phi_q = phi_q*(2*pi/Q);
 
@@ -14,7 +14,7 @@ r_q = R_o*ones(1,Q);
 R = -6:0.1:6;
 W = -pi:0.01:pi;
 
-sam_r = (R_o-2)*ones(1, 2*M+1);
+sam_r = (R_o-3)*ones(1, 2*M+1);
 sam_p = 0:2*M;
 sam_p = sam_p*(2*pi/(2*M+1));
 
@@ -30,6 +30,12 @@ T = transform_a(M, Q, r_q, phi_q, f, R_o);
 
 B = pinv(T) * A;
 
+k = 2*pi*f/340;
+n_max = round(exp(1)*k*R_o/2);
+for j = -n_max:n_max
+    B(j+n_max+1) = (1i)^j * exp(-1i * j * pi/4);
+end
+
 [x, y] = meshgrid(-6:0.1:6,-6:0.1:6);
 sx = size(x);
 k = 1;
@@ -39,7 +45,7 @@ for i = -60:60
         z(i+61, j+61) = temp;
     end
 end
-sz = size(z)
+sz = size(z);
 a = real(z);
 surf(x,y,a);
 
