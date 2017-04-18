@@ -1,4 +1,4 @@
-clear all 
+clear all
 
 Q = 10;
 M = 1;
@@ -9,7 +9,7 @@ phi_q = phi_q*(2*pi/Q);
 
 omega_q = phi_q;
 phi_q = mod((pi + phi_q), 2*pi);
-r_q = R_o*ones(Q,1);
+r_q = R_o*ones(1,Q);
 
 R = -6:0.1:6;
 W = -pi:0.01:pi;
@@ -36,19 +36,12 @@ k = 1;
 for i = -60:60
     for j = -60:60
         temp = sound_pressure_inside(B, sqrt(x(i+61, j+61)*x(i+61, j+61) + y(i+61, j+61)*y(i+61, j+61)), atan(y(i+61, j+61)/x(i+61, j+61)), f, R_o);
-        %size(temp)
         z(i+61, j+61) = temp;
-        %dz = temp
     end
 end
 sz = size(z)
-%omega = atan(y./x);
-%z = sound_pressure_inside(140,R,omega);
 a = real(z);
 surf(x,y,a);
-
-
-
 
 L = 4;
 R_s = 1;
