@@ -5,7 +5,7 @@ function [ A ] = cofficients_b(M, sam_R, sam_P, mic_r, mic_p, f, R_s, L)
 
     sp = zeros(1, 2*M+1);
     %size(sp)
-    for n = 1:2*M
+    for n = 1:2*M+1
         sp(n) = sound_pressure_outside(Inf, L, sam_R(n), sam_P(n), f, R_s);
     end
     

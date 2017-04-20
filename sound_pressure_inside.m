@@ -2,6 +2,10 @@ function [ sp ] = sound_pressure_inside(alpha, R, w, f, R_o)
     sp = 0;
     k = 2*pi*f/340;
     n_max = round(exp(1)*k*R_o/2);
+
+    if alpha == Inf
+        n_max = 2*n_max;
+    end
     
     for n = -n_max:n_max  
         if alpha==Inf

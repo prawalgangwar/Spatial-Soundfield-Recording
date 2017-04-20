@@ -5,7 +5,7 @@ function [ A ] = cofficients_a(M, sam_R, sam_P, mic_r, mic_p, f, R_o)
 
     sp = zeros(1, 2*M+1);
     %size(sp)
-    for n = 1:2*M
+    for n = 1:2*M+1
         sp(n) = sound_pressure_inside(Inf, sam_R(n), sam_P(n), f, R_o);
     end
     
@@ -30,5 +30,6 @@ function [ A ] = cofficients_a(M, sam_R, sam_P, mic_r, mic_p, f, R_o)
     end
 
     A = sp/J;
+    %A = sp * inv(J);
 end
 
