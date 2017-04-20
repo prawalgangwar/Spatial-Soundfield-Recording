@@ -1,4 +1,4 @@
-function [ A ] = cofficients_a(M, sam_R, sam_P, mic_r, mic_p, f, R_o)
+function [ A ] = cofficients_b(M, sam_R, sam_P, mic_r, mic_p, f, R_s, L)
 
     sam_x = sam_R .* cos(sam_P);
     sam_y = sam_R .* sin(sam_P);
@@ -6,7 +6,7 @@ function [ A ] = cofficients_a(M, sam_R, sam_P, mic_r, mic_p, f, R_o)
     sp = zeros(1, 2*M+1);
     %size(sp)
     for n = 1:2*M
-        sp(n) = sound_pressure_inside(Inf, sam_R(n), sam_P(n), f, R_o);
+        sp(n) = sound_pressure_outside(Inf, L, sam_R(n), sam_P(n), f, R_s);
     end
     
     k = 2*pi*f/340;
@@ -25,7 +25,7 @@ function [ A ] = cofficients_a(M, sam_R, sam_P, mic_r, mic_p, f, R_o)
     
     for n = 1:2*M+1
         for j = 1:2*M+1
-            J(n,j) = besselj(n-M-1, k*r_x(j)) * exp(1i*(n-M-1)*r_p(j));
+            J(n,j) = besselh(n-M-1, k*r_x(j)) * exp(1i*(n-M-1)*r_p(j));
         end
     end
 
